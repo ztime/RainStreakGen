@@ -55,7 +55,7 @@ def write2txt(fname,strings,mode='a'):
 
 def add_rain_streak(im_path,str_index=4,stype='dense',gaussian_sigma = 1,st_min_size = 0,st_max_size = 2000 ,streak_root = 'data/Streaks_Garg06/'):  
     if stype=='dense':
-        steps = 12
+        steps = 2
         iter_num = 0
         sigma = 0.2
         mu = 0.25            
@@ -84,7 +84,7 @@ def add_rain_streak(im_path,str_index=4,stype='dense',gaussian_sigma = 1,st_min_
     str_file_list = glob.glob(streak_root+'*-{}.png'.format(str_index))
     stage_st_final = np.zeros((bh,bw,3)).astype(float)
     for i in range(steps):
-        strnum = random.randint(0,len(str_file_list))
+        strnum = random.randint(0,len(str_file_list)-1)
         st = cv2.imread(str_file_list[strnum])
         resize_shape = (int(st.shape[1]*4),int(st.shape[0]*4))
         st = cv2.resize(st,resize_shape)
@@ -118,10 +118,11 @@ def add_rain_streak(im_path,str_index=4,stype='dense',gaussian_sigma = 1,st_min_
                 #st_final = st_final + selected.astype(float)*tr
                 stage_st_final = stage_st_final + selected.astype(float)*tr
     #rain_final = np.clip(rain_final,0.0,1.0)
-    stage_rain_final = np.clip(stage_rain_final,0.0,1.0)
+    stage_st_final = cv2.cvtColor(img_as_uint(stage_st_final),cv2.COLOR_BGR2GRAY)
     pic_name = 'out/{0}-str{1}-type{2}.png'.format(stype,filename,str_index)
-    imsave(pic_name,img_as_uint(stage_st_final))
+    imsave(pic_name,stage_st_final)
     #write2txt(stype_list_stats,pic_name,'a')
+    stage_rain_final = np.clip(stage_rain_final,0.0,1.0)
     pic_name = 'out/{0}-rain{1}-type{2}.png'.format(stype,filename,str_index)
     imsave(pic_name,img_as_uint(stage_rain_final))
     #write2txt(rain_stype_list_stats,pic_name,'a')
@@ -141,8 +142,7 @@ if __name__ == "__main__":
     im_path = img_file_list[fileindex]
     stypes = ['dense','middle','sparse']
     for str_index in range(4,9):
-        print('str_index ',str_index)
-        for stype in stypes:            
-            _,_=add_rain_streak(im_path,str_index,stype)
+                 
+        _,_=add_rain_streak(im_path,str_index,'dense')
 
     
