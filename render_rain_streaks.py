@@ -119,11 +119,11 @@ def add_rain_streak(im_path,str_index=4,stype='dense',gaussian_sigma = 1,st_min_
                 stage_st_final = stage_st_final + selected.astype(float)*tr
     #rain_final = np.clip(rain_final,0.0,1.0)
     stage_st_final = cv2.cvtColor(img_as_uint(stage_st_final),cv2.COLOR_BGR2GRAY)
-    pic_name = 'out/{0}-str{1}-type{2}.png'.format(stype,filename,str_index)
+    pic_name = 'new_out/{0}-str{1}-type{2}.png'.format(stype,filename,str_index)
     imsave(pic_name,stage_st_final)
     #write2txt(stype_list_stats,pic_name,'a')
     stage_rain_final = np.clip(stage_rain_final,0.0,1.0)
-    pic_name = 'out/{0}-rain{1}-type{2}.png'.format(stype,filename,str_index)
+    pic_name = 'new_out/{0}-rain{1}-type{2}.png'.format(stype,filename,str_index)
     imsave(pic_name,img_as_uint(stage_rain_final))
     #write2txt(rain_stype_list_stats,pic_name,'a')
     return stage_rain_final,stage_st_final
