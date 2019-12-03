@@ -27,14 +27,27 @@ def imbinarize_G(img, GaussianBlur=False):
 def bwareafilt(image,min_size=0,max_size=1000,connectivity=4):
     image = image.astype(np.uint8)
     nb_components, labels , stats, _ = cv2.connectedComponentsWithStats(image, connectivity=connectivity)
+    print(f"nb_components:{nb_components}")
+    print(f"labels:{labels}")
+    print(f"labels shape:{labels.shape}")
+    print(f"stats:{stats}")
+    print(f"stats shape:{stats.shape}")
+    print(f"stats max: {np.amax(stats)}")
     sizes = stats[:, -1]
+    print(f"sizes:{sizes}")
+    print(f"sizes shape:{sizes.shape}")
     img2 = np.zeros(labels.shape)
     label = 1
     for i in range(2,nb_components):
+        print(f"Running for {i}/{nb_components}...")
         if sizes[i] <= max_size and sizes[i]>=min_size:
+            print(f"Size was ok!")
             label = i
             img2[labels == label] = 1
-
+        fig = plt.figure()
+        plt.imshow(img2)
+        plt.show()
+        plt.close(fig)
     return img2
 
 def show_imgs_in_cols(rows,cols,img_list,title_list=[],figsize=(15, 10)):
