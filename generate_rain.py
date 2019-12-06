@@ -73,44 +73,14 @@ def main():
 
 def bwareafilt(image,min_size=0,max_size=1000,connectivity=4):
     image = image.astype(np.uint8)
-
-    # test_image = np.copy(image).astype(np.float)
-    # test_image[test_image >= np.average(image) - 1.0] = 1.0
-    # test_image[test_image < np.average(image) - 1.0] = 0.0
-    # print(image.shape)
-    # print(np.amax(image))
-    # print(np.amin(image))
-    # print(np.average(image))
-
-    # fig, axes = plt.subplots(1,3)
-    # axes[0].imshow(image)
     nb_components, labels , stats, _ = cv2.connectedComponentsWithStats(image, connectivity=connectivity)
-    # print(f"nb_components:{nb_components}")
-    # print(f"labels:{labels}")
-    # print(f"labels shape:{labels.shape}")
-    # print(f"stats:{stats}")
-    # print(f"stats shape:{stats.shape}")
-    # print(f"stats max: {np.amax(stats)}")
     sizes = stats[:, -1]
-    # print(f"sizes:{sizes}")
-    # print(f"sizes shape:{sizes.shape}")
     img2 = np.zeros(labels.shape)
     label = 1
     for i in range(2,nb_components):
-        # print(f"Running for {i}/{nb_components}...")
         if sizes[i] <= max_size and sizes[i]>=min_size:
-            # print(f"Size was ok!")
             label = i
             img2[labels == label] = 1
-        # fig = plt.figure()
-        # plt.imshow(img2)
-        # plt.show()
-        # plt.close(fig)
-    # axes[1].imshow(img2)
-    # axes[2].imshow(test_image)
-    # plt.show()
-    # plt.close(fig)
-    quit()
     return img2
 
 #Otsu's Binarization
