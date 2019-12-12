@@ -2,3 +2,4 @@ out/*.png
 *.png
 *.avi
 *.zip
+__pycache__
